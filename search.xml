@@ -35,9 +35,9 @@
       <tags>
         <tag>BFS</tag>
         <tag>DFS</tag>
-        <tag>算法</tag>
         <tag>图</tag>
         <tag>c++</tag>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -45,20 +45,6 @@
     <url>/1900/%E5%A3%B0%E6%98%8E/</url>
     <content><![CDATA[<p>本博客模板是在“班班”的博客<a href="https://github.com/lei2rock/blog"><i class="fab fa-fw fa-github"></i>Lei2rock/Blog</a>基础上进行的修改，感谢班班，原博客地址：<a href="https://blog.dlzhang.com/">https://blog.dlzhang.com</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>维特比算法</title>
-    <url>/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<span id="more"></span>]]></content>
-      <categories>
-        <category>NLP基础</category>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-        <tag>NLP</tag>
-        <tag>维特比算法</tag>
-      </tags>
   </entry>
   <entry>
     <title>NLP基础：从分词和向量化说起</title>
@@ -136,8 +122,22 @@
         <category>NLP基础</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
         <tag>分词</tag>
+        <tag>NLP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>维特比算法</title>
+    <url>/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<span id="more"></span>]]></content>
+      <categories>
+        <category>NLP基础</category>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>NLP</tag>
+        <tag>维特比算法</tag>
       </tags>
   </entry>
 </search>
