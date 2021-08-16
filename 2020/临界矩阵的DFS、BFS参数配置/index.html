@@ -26,7 +26,7 @@
 <meta name="description" content="深度优先算法（DFS）和广度优先算法（BFS）在许多树和图的问题上都能派上用场。基于树的DFS、BFS比较简单，但基于图DFS、BFS在传参的时候有一些小细节得注意一下。不同于树，由于树具有层次结构，所以可以用一个int类型的值来表示各个节点；图则不然，需要通过（x，y）坐标的形式来表示各个节点，所以在代码编写时传递图节点（x，y）时，有哪些是值得注意的呢？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="图的DFS、BFS算法细节">
-<meta property="og:url" content="https://cyberfish1120.github.io/posts/undefined/">
+<meta property="og:url" content="https://cyberfish1120.github.io/2020/%E4%B8%B4%E7%95%8C%E7%9F%A9%E9%98%B5%E7%9A%84DFS%E3%80%81BFS%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/">
 <meta property="og:site_name" content="CYBERFISH">
 <meta property="og:description" content="深度优先算法（DFS）和广度优先算法（BFS）在许多树和图的问题上都能派上用场。基于树的DFS、BFS比较简单，但基于图DFS、BFS在传参的时候有一些小细节得注意一下。不同于树，由于树具有层次结构，所以可以用一个int类型的值来表示各个节点；图则不然，需要通过（x，y）坐标的形式来表示各个节点，所以在代码编写时传递图节点（x，y）时，有哪些是值得注意的呢？">
 <meta property="og:locale" content="zh_CN">
@@ -41,11 +41,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://cyberfish1120.github.io/posts/undefined/">
+<link rel="canonical" href="https://cyberfish1120.github.io/2020/%E4%B8%B4%E7%95%8C%E7%9F%A9%E9%98%B5%E7%9A%84DFS%E3%80%81BFS%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cyberfish1120.github.io/posts/undefined/","path":"/posts/undefined/","title":"图的DFS、BFS算法细节"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cyberfish1120.github.io/2020/%E4%B8%B4%E7%95%8C%E7%9F%A9%E9%98%B5%E7%9A%84DFS%E3%80%81BFS%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/","path":"2020/临界矩阵的DFS、BFS参数配置/","title":"图的DFS、BFS算法细节"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>图的DFS、BFS算法细节 | CYBERFISH</title>
@@ -59,7 +59,7 @@
 
 
 
-<link rel="preconnect" href="https://website-1256060851.cos.ap-hongkong.myqcloud.com" crossorigin>
+<link rel="preconnect" href="https://website-1256060851.cos.ap-hongkong.myqcloud_.com" crossorigin>
 <link rel="preconnect" href="https://sdn.geekzu.org" crossorigin>
 
 
@@ -75,7 +75,7 @@
 <script type="text/javascript">
 // Live2d
 // 注意：live2d_path 参数应使用绝对路径
-const live2d_path = "https://cdn.jsdelivr.net/gh/lei2rock/live2d-widget/";
+const live2d_path = "https://cdn.jsdelivr.net/gh/cyberfish1120/live2d-widget@latest/";
 
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
@@ -102,14 +102,14 @@ function loadExternalResource(url, type) {
 // 加载 waifu.css live2d.min.js waifu-tips.js
 if (screen.width >= 768) {
 	Promise.all([
-		loadExternalResource(live2d_path + "waifu.min.css", "css"),
+		loadExternalResource(live2d_path + "waifu.css", "css"),
 		loadExternalResource(live2d_path + "live2d.min.js", "js"),
-		loadExternalResource(live2d_path + "waifu-tips.min.js", "js")
+		loadExternalResource(live2d_path + "waifu-tips.js", "js")
 	]).then(() => {
 		initWidget({
-			waifuPath: live2d_path + "waifu-tips.json",
-			apiPath: "https://api.dlzhang.com/live2d/", // https://live2d.fghrsh.net/api/
-			//cdnPath: "https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/"
+			 waifuPath: live2d_path + "waifu-tips.json",
+			//apiPath: "https://api.dlzhang.com/live2d/", // https://live2d.fghrsh.net/api/
+			cdnPath: "https://cdn.jsdelivr.net/gh/cyberfish1120/live2d_api/",
 		});
 	});
 }
@@ -136,13 +136,6 @@ console.log(`
                   ﾄ-,/  |___./
                   'ｰ'    !_,.:
 `);
-// End Live2d Code
-
-window.addEventListener('load', () => {
-	console.log(`\n%c醉里挑灯赏猫%c班班 @lei2rock%c\n`, 'padding: 8px; background: #3f5973; font-weight: bold; font-size: large; color: white;', 'padding: 8px; background: #649ab6; font-size: large; color: #eee;','');
-	console.log(`页面加载完毕消耗了${Math.round(performance.now() * 100) / 100}ms`);
-});
-
 </script>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -328,7 +321,7 @@ window.addEventListener('load', () => {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/posts/undefined/">
+    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/2020/%E4%B8%B4%E7%95%8C%E7%9F%A9%E9%98%B5%E7%9A%84DFS%E3%80%81BFS%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -461,12 +454,12 @@ window.addEventListener('load', () => {
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/null/" rel="prev" title="声明">
+                <a href="/1900/%E5%A3%B0%E6%98%8E/" rel="prev" title="声明">
                   <i class="fa fa-chevron-left"></i> 声明
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/null/" rel="next" title="维特比算法">
+                <a href="/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/" rel="next" title="维特比算法">
                   维特比算法 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>

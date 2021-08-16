@@ -23,15 +23,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"cyberfish1120.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="大不自多，海纳江河。惟学无际，际于天地。形上谓道兮，形下谓器。礼主别异兮，乐主和同。知其不二兮，尔听斯聪。      我是班班，欢迎访问我的博客。希望可以通过这个平台分享自己的一些生活日常、观点和想法。 　　博客文章主要分为四大类：「学术向」主要是一些比较学术性的文章；「碎碎念」主要分享自己的日常生活和有趣的经历；「科技树」是关于数码产品或者编程代码相关的文章；「观察者」会发布一些自己对社会议题">
+<meta name="description" content="大不自多，海纳江河。惟学无际，际于天地。形上谓道兮，形下谓器。礼主别异兮，乐主和同。知其不二兮，尔听斯聪。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="关于更多">
 <meta property="og:url" content="https://cyberfish1120.github.io/more/">
 <meta property="og:site_name" content="CYBERFISH">
-<meta property="og:description" content="大不自多，海纳江河。惟学无际，际于天地。形上谓道兮，形下谓器。礼主别异兮，乐主和同。知其不二兮，尔听斯聪。      我是班班，欢迎访问我的博客。希望可以通过这个平台分享自己的一些生活日常、观点和想法。 　　博客文章主要分为四大类：「学术向」主要是一些比较学术性的文章；「碎碎念」主要分享自己的日常生活和有趣的经历；「科技树」是关于数码产品或者编程代码相关的文章；「观察者」会发布一些自己对社会议题">
+<meta property="og:description" content="大不自多，海纳江河。惟学无际，际于天地。形上谓道兮，形下谓器。礼主别异兮，乐主和同。知其不二兮，尔听斯聪。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-08-06T07:44:06.187Z">
-<meta property="article:modified_time" content="2021-08-06T07:44:06.187Z">
+<meta property="article:published_time" content="2021-08-16T00:54:36.508Z">
+<meta property="article:modified_time" content="2021-08-16T00:54:36.508Z">
 <meta property="article:author" content="Cyberfish">
 <meta property="article:tag" content="CyberFish">
 <meta property="article:tag" content="Cyberfish">
@@ -60,7 +60,7 @@
 
 
 
-<link rel="preconnect" href="https://website-1256060851.cos.ap-hongkong.myqcloud.com" crossorigin>
+<link rel="preconnect" href="https://website-1256060851.cos.ap-hongkong.myqcloud_.com" crossorigin>
 <link rel="preconnect" href="https://sdn.geekzu.org" crossorigin>
 
 
@@ -76,7 +76,7 @@
 <script type="text/javascript">
 // Live2d
 // 注意：live2d_path 参数应使用绝对路径
-const live2d_path = "https://cdn.jsdelivr.net/gh/lei2rock/live2d-widget/";
+const live2d_path = "https://cdn.jsdelivr.net/gh/cyberfish1120/live2d-widget@latest/";
 
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
@@ -103,14 +103,14 @@ function loadExternalResource(url, type) {
 // 加载 waifu.css live2d.min.js waifu-tips.js
 if (screen.width >= 768) {
 	Promise.all([
-		loadExternalResource(live2d_path + "waifu.min.css", "css"),
+		loadExternalResource(live2d_path + "waifu.css", "css"),
 		loadExternalResource(live2d_path + "live2d.min.js", "js"),
-		loadExternalResource(live2d_path + "waifu-tips.min.js", "js")
+		loadExternalResource(live2d_path + "waifu-tips.js", "js")
 	]).then(() => {
 		initWidget({
-			waifuPath: live2d_path + "waifu-tips.json",
-			apiPath: "https://api.dlzhang.com/live2d/", // https://live2d.fghrsh.net/api/
-			//cdnPath: "https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/"
+			 waifuPath: live2d_path + "waifu-tips.json",
+			//apiPath: "https://api.dlzhang.com/live2d/", // https://live2d.fghrsh.net/api/
+			cdnPath: "https://cdn.jsdelivr.net/gh/cyberfish1120/live2d_api/",
 		});
 	});
 }
@@ -137,13 +137,6 @@ console.log(`
                   ﾄ-,/  |___./
                   'ｰ'    !_,.:
 `);
-// End Live2d Code
-
-window.addEventListener('load', () => {
-	console.log(`\n%c醉里挑灯赏猫%c班班 @lei2rock%c\n`, 'padding: 8px; background: #3f5973; font-weight: bold; font-size: large; color: white;', 'padding: 8px; background: #649ab6; font-size: large; color: #eee;','');
-	console.log(`页面加载完毕消耗了${Math.round(performance.now() * 100) / 100}ms`);
-});
-
 </script>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -345,13 +338,6 @@ window.addEventListener('load', () => {
 <p>大不自多，海纳江河。<br>惟学无际，际于天地。<br>形上谓道兮，形下谓器。<br>礼主别异兮，乐主和同。<br>知其不二兮，尔听斯聪。</p>
 
 </blockquote>
-
-<p>  我是班班，欢迎访问我的博客。希望可以通过这个平台分享自己的一些生活日常、观点和想法。</p>
-<p>　　博客文章主要分为四大类：「<a href="/overview/academic/">学术向</a>」主要是一些比较学术性的文章；「<a href="/overview/life/">碎碎念</a>」主要分享自己的日常生活和有趣的经历；「<a href="/overview/tech/">科技树</a>」是关于数码产品或者编程代码相关的文章；「<a href="/overview/viewpoint/">观察者</a>」会发布一些自己对社会议题、热点事件的观点想法。</p>
-<p>　　如果你在浏览博客的过程中发现了任何问题，欢迎前往代码仓库 <a target="_blank" rel="noopener" href="https://github.com/lei2rock/blog"><i class="fab fa-fw fa-github"></i>Lei2rock/Blog</a> 提出。除特别声明外，博客中的所有作品均为本人原创并采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA 4.0 许可协议</a>。如需转载，请注明出处；如需商业性使用，请先邮件联络获得书面许可。</p>
-<p>　　欢迎您通过<a target="_blank" rel="noopener" href="https://afdian.net/@lei2rock"><font color=#946ce6><i class="fas fa-fw fa-bolt"></i>爱发电</font></a> 或者<a target="_blank" rel="noopener" href="https://paypal.me/lei2rock"><font color=#0070ba><i class="fab fa-fw fa-paypal"></i>Paypal</font></a>支持我更好地创作。</p>
-<h3 id="订阅本站"><a href="#订阅本站" class="headerlink" title="订阅本站"></a>订阅本站</h3><p>　<i class="fas fa-fw fa-rss"></i> <a href="/atom.xml">RSS</a><br>　<i class="fab fa-fw fa-weixin"></i> <a class="fancybox fancybox.image" target="_blank" href="https://website-1256060851.cos.ap-hongkong.myqcloud.com/qrcode/wechat-channel.jpg" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url" data-fancybox="default" rel="default noopener" title="微信公众号：班班碎碎念" data-caption="微信公众号：班班碎碎念">公众号：班班碎碎念</a></p>
-<h3 id="在这里发现更多"><a href="#在这里发现更多" class="headerlink" title="在这里发现更多"></a>在这里发现更多</h3><p>　<i class="fas fa-fw fa-envelope"></i> lei2rock (at) outlook.com<br>　<i class="fab fa-fw fa-weibo"></i> <a target="_blank" rel="noopener" href="https://weibo.com/7216640993">微博</a><br>　<i class="fa-fw czs-bilibili"></i> <a target="_blank" rel="noopener" href="https://space.bilibili.com/7454906">哔哩哔哩</a><br>　<i class="fab fa-fw fa-github"></i> <a target="_blank" rel="noopener" href="https://github.com/lei2rock">GitHub</a></p>
 
       </div>
       

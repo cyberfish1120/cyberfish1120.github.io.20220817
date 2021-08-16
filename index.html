@@ -57,7 +57,7 @@
 
 
 
-<link rel="preconnect" href="https://website-1256060851.cos.ap-hongkong.myqcloud.com" crossorigin>
+<link rel="preconnect" href="https://website-1256060851.cos.ap-hongkong.myqcloud_.com" crossorigin>
 <link rel="preconnect" href="https://sdn.geekzu.org" crossorigin>
 
 
@@ -73,7 +73,7 @@
 <script type="text/javascript">
 // Live2d
 // 注意：live2d_path 参数应使用绝对路径
-const live2d_path = "https://cdn.jsdelivr.net/gh/lei2rock/live2d-widget/";
+const live2d_path = "https://cdn.jsdelivr.net/gh/cyberfish1120/live2d-widget@latest/";
 
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
@@ -100,14 +100,14 @@ function loadExternalResource(url, type) {
 // 加载 waifu.css live2d.min.js waifu-tips.js
 if (screen.width >= 768) {
 	Promise.all([
-		loadExternalResource(live2d_path + "waifu.min.css", "css"),
+		loadExternalResource(live2d_path + "waifu.css", "css"),
 		loadExternalResource(live2d_path + "live2d.min.js", "js"),
-		loadExternalResource(live2d_path + "waifu-tips.min.js", "js")
+		loadExternalResource(live2d_path + "waifu-tips.js", "js")
 	]).then(() => {
 		initWidget({
-			waifuPath: live2d_path + "waifu-tips.json",
-			apiPath: "https://api.dlzhang.com/live2d/", // https://live2d.fghrsh.net/api/
-			//cdnPath: "https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/"
+			 waifuPath: live2d_path + "waifu-tips.json",
+			//apiPath: "https://api.dlzhang.com/live2d/", // https://live2d.fghrsh.net/api/
+			cdnPath: "https://cdn.jsdelivr.net/gh/cyberfish1120/live2d_api/",
 		});
 	});
 }
@@ -134,13 +134,6 @@ console.log(`
                   ﾄ-,/  |___./
                   'ｰ'    !_,.:
 `);
-// End Live2d Code
-
-window.addEventListener('load', () => {
-	console.log(`\n%c醉里挑灯赏猫%c班班 @lei2rock%c\n`, 'padding: 8px; background: #3f5973; font-weight: bold; font-size: large; color: white;', 'padding: 8px; background: #649ab6; font-size: large; color: #eee;','');
-	console.log(`页面加载完毕消耗了${Math.round(performance.now() * 100) / 100}ms`);
-});
-
 </script>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -324,7 +317,7 @@ window.addEventListener('load', () => {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/posts/null/">
+    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/2021/NLP%E5%9F%BA%E7%A1%80%EF%BC%9A%E4%BB%8E%E5%88%86%E8%AF%8D%E5%92%8C%E5%90%91%E9%87%8F%E5%8C%96%E8%AF%B4%E8%B5%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -337,7 +330,7 @@ window.addEventListener('load', () => {
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/null/" class="post-title-link" itemprop="url">NLP基础：从分词说起</a>
+          <a href="/2021/NLP%E5%9F%BA%E7%A1%80%EF%BC%9A%E4%BB%8E%E5%88%86%E8%AF%8D%E5%92%8C%E5%90%91%E9%87%8F%E5%8C%96%E8%AF%B4%E8%B5%B7/" class="post-title-link" itemprop="url">NLP基础：从分词和向量化说起</a>
         </h2>
 
         <div class="post-meta-container">
@@ -370,7 +363,10 @@ window.addEventListener('load', () => {
     
     
     <div class="post-body" itemprop="articleBody">
-          <span id="more"></span>
+          <p>　　在做NLP任务时，首先需要对文本数据进行“分词”和“向量化”处理。直观上来说，一个好的文本分词结果对模型的语义训练起着非常重要的作用。分词方式从简单的字符划分，到语言模型（LM），再到维特比算法的约束；字符向量化从基于词频、到TF-IDF、再到word2vec，这些文本处理手段使得NLP的基石越打越牢！</p>
+          <!--noindex-->
+          <!--/noindex-->
+        
       
     </div>
 
@@ -396,7 +392,7 @@ window.addEventListener('load', () => {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/posts/null/">
+    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -409,7 +405,7 @@ window.addEventListener('load', () => {
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/null/" class="post-title-link" itemprop="url">维特比算法</a>
+          <a href="/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">维特比算法</a>
         </h2>
 
         <div class="post-meta-container">
@@ -472,7 +468,7 @@ window.addEventListener('load', () => {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/posts/undefined/">
+    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/2020/%E4%B8%B4%E7%95%8C%E7%9F%A9%E9%98%B5%E7%9A%84DFS%E3%80%81BFS%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -485,7 +481,7 @@ window.addEventListener('load', () => {
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/undefined/" class="post-title-link" itemprop="url">图的DFS、BFS算法细节</a>
+          <a href="/2020/%E4%B8%B4%E7%95%8C%E7%9F%A9%E9%98%B5%E7%9A%84DFS%E3%80%81BFS%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">图的DFS、BFS算法细节</a>
         </h2>
 
         <div class="post-meta-container">
@@ -547,7 +543,7 @@ window.addEventListener('load', () => {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/posts/null/">
+    <link itemprop="mainEntityOfPage" href="https://cyberfish1120.github.io/1900/%E5%A3%B0%E6%98%8E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -560,7 +556,7 @@ window.addEventListener('load', () => {
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/null/" class="post-title-link" itemprop="url">声明</a>
+          <a href="/1900/%E5%A3%B0%E6%98%8E/" class="post-title-link" itemprop="url">声明</a>
         </h2>
 
         <div class="post-meta-container">
@@ -645,7 +641,7 @@ window.addEventListener('load', () => {
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 

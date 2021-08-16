@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>图的DFS、BFS算法细节</title>
-    <url>//posts/undefined/</url>
+    <url>/2020/%E4%B8%B4%E7%95%8C%E7%9F%A9%E9%98%B5%E7%9A%84DFS%E3%80%81BFS%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>　　深度优先算法（DFS）和广度优先算法（BFS）在许多<strong>树</strong>和<strong>图</strong>的问题上都能派上用场。基于树的DFS、BFS比较简单，但基于图DFS、BFS在传参的时候有一些小细节得注意一下。不同于树，由于树具有层次结构，所以可以用一个int类型的值来表示各个节点；图则不然，需要通过（x，y）坐标的形式来表示各个节点，所以在代码编写时传递图节点（x，y）时，有哪些是值得注意的呢？</p>
 <span id="more"></span>
 <hr>
@@ -42,13 +42,13 @@
   </entry>
   <entry>
     <title>声明</title>
-    <url>//posts/null/</url>
+    <url>/1900/%E5%A3%B0%E6%98%8E/</url>
     <content><![CDATA[<p>本博客模板是在“班班”的博客<a href="https://github.com/lei2rock/blog"><i class="fab fa-fw fa-github"></i>Lei2rock/Blog</a>基础上进行的修改，感谢班班，原博客地址：<a href="https://blog.dlzhang.com/">https://blog.dlzhang.com</a></p>
 ]]></content>
   </entry>
   <entry>
     <title>维特比算法</title>
-    <url>//posts/null/</url>
+    <url>/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<span id="more"></span>]]></content>
       <categories>
         <category>NLP基础</category>
@@ -61,9 +61,77 @@
       </tags>
   </entry>
   <entry>
-    <title>NLP基础：从分词说起</title>
-    <url>//posts/null/</url>
-    <content><![CDATA[<span id="more"></span>]]></content>
+    <title>NLP基础：从分词和向量化说起</title>
+    <url>/2021/NLP%E5%9F%BA%E7%A1%80%EF%BC%9A%E4%BB%8E%E5%88%86%E8%AF%8D%E5%92%8C%E5%90%91%E9%87%8F%E5%8C%96%E8%AF%B4%E8%B5%B7/</url>
+    <content><![CDATA[<p>　　在做NLP任务时，首先需要对文本数据进行“分词”和“向量化”处理。直观上来说，一个好的文本分词结果对模型的语义训练起着非常重要的作用。分词方式从简单的字符划分，到语言模型（LM），再到维特比算法的约束；字符向量化从基于词频、到TF-IDF、再到word2vec，这些文本处理手段使得NLP的基石越打越牢！</p>
+<span id="more"></span>
+<hr>
+<h2 id="字符分词，词频向量化"><a href="#字符分词，词频向量化" class="headerlink" title="字符分词，词频向量化"></a>字符分词，词频向量化</h2><p>　　最简单的划分方法，首先统计整个文档的字符数，然后记录每个字符出现的次数即可。例如：</p>
+<blockquote>
+<p>“我是一名研究生。<br>我在杭州电子科技大学学习。<br>我的研究领域为自然语言处理。”</p>
+</blockquote>
+<p>　　该迷你数据集包含三条数据，共32个不同的字符，其中“我”的词频为3，“学”的词频为2，其他均为1。首先将32个字符建立成词典：  </p>
+<table>
+<thead>
+<tr>
+<th align="center">index</th>
+<th align="center">0</th>
+<th align="center">1</th>
+<th align="center">2</th>
+<th align="center">3</th>
+<th align="center">…</th>
+<th align="center">31</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">char</td>
+<td align="center">我</td>
+<td align="center">是</td>
+<td align="center">一</td>
+<td align="center">名</td>
+<td align="center">…</td>
+<td align="center">理</td>
+</tr>
+</tbody></table>
+<p>基于词频的向量化：</p>
+<blockquote>
+<p>[[1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, …, 0],<br>[1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, …, 0],<br>[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …, 1]]</p>
+</blockquote>
+<p>这就是最简单的通过词频来做文本数据的向量化，但是呢该方法存在两个主要的问题：</p>
+<ol>
+<li>本末倒置。一些没有什么实际含义的常用词词频会特别高，比如“我”、“是”、“。”，而某些词频低的字符可能包含着非常重要和关键的信息，比如“杭”、“研”、“语”等，这样的表示方式会让模型关注无意义的词，而忽略真正的语义信息；</li>
+<li>维度爆炸，数据稀疏。当数据量大起来是，向量长度会急剧增加，而且存在大量的稀疏数据。</li>
+</ol>
+<hr>
+<h2 id="字符分词，TF-IDF向量化"><a href="#字符分词，TF-IDF向量化" class="headerlink" title="字符分词，TF-IDF向量化"></a>字符分词，TF-IDF向量化</h2><p>　　为了解决上述问题，学者提出了TF-IDF。“TF-IDF”即“词频-逆文本频率”，它由两部分组成：TF和IDF。<br>　　前面的TF也就是我们前面说到的词频，我们之前做的向量化也就是做了文本中各个词的出现频率统计，并作为文本特征，这个很好理解。关键是后面的这个IDF，即“逆文本频率”如何理解。在上一节中，我们看到几乎所有文本都会出现的”我”词频虽然高，但是重要性却应该比词频低的”杭”和是要低的。IDF就是来帮助我们来反应这个词的重要性的，进而修正仅仅用词频表示的词特征值。<br>　　概括来讲， IDF反应了一个词在所有文本中出现的频率，如果一个词在很多的文本中出现，那么它的IDF值应该低，比如上文中的“我”。而反过来如果一个词在比较少的文本中出现，那么它的IDF值应该高。比如一些专有的字符如“杭”。这样的词IDF值应该高。一个极端的情况，如果一个词在所有的文本中都出现，那么它的IDF值应该为0。<br>　　上面是从定性上说明的IDF的作用，那么如何对一个词的IDF进行定量分析呢？这里直接给出一个词x的IDF的基本公式如下：</p>
+<p align=center>$$IDF(x)=\log \frac{N}{N(x)}$$</p>
+　　其中，N代表语料库中文本的总数，而N(x)代表语料库中包含词x的文本总数。上面的IDF公式已经可以使用了，但是在一些特殊的情况会有一些小问题，比如某一个生僻词在语料库中没有，这样我们的分母为0， IDF没有意义了。所以常用的IDF我们需要做一些平滑，使语料库中没有出现的词也可以得到一个合适的IDF值。平滑的方法有很多种，最常见的IDF平滑后的公式之一为：
+<p align=center>$$IDF(x)=\log \frac{N+1}{N(x)+1}+1$$</p>
+　　有了IDF的定义，我们就可以计算某一个词的TF-IDF值了：
+<p align=center>$$TF-IDF(x)=TF(x) * IDF(x)$$</p>
+　　TF-IDF相较于词频在文本表示方面有所提升，但在中文领域，基于字符的分词方法依旧会存在问题，比如：“菜鸟”和“菜”+“鸟”的两种分词形式对模型的训练影响可能存在着完全不同的影响。
+***
+
+<h2 id="语言模型（LM）分词"><a href="#语言模型（LM）分词" class="headerlink" title="语言模型（LM）分词"></a>语言模型（LM）分词</h2><p>　　为了解决上述问题，相关学者进一步提出了语言模型的分词策略，简而言之就是每种分词片段占的权重不一样，即将“我爱机器学习”分成“我、爱、机器学习”比“我、爱、机器、学习”的概率要大一些。<br>　　再举个例子： 给定词典=[我们 学习 人工 智能 人工智能 未来 是]， 另外我们给定unigram概率：p(我们)=0.25, p(学习)=0.15, p(人工)=0.05, p(智能)=0.1, p(人工智能)=0.2, p(未来)=0.1, p(是)=0.15</p>
+<h4 id="Step-1-对于给定字符串：”我们学习人工智能，人工智能是未来“-找出所有可能的分割方式："><a href="#Step-1-对于给定字符串：”我们学习人工智能，人工智能是未来“-找出所有可能的分割方式：" class="headerlink" title="Step 1: 对于给定字符串：”我们学习人工智能，人工智能是未来“, 找出所有可能的分割方式："></a>Step 1: 对于给定字符串：”我们学习人工智能，人工智能是未来“, 找出所有可能的分割方式：</h4><ol>
+<li>[我们，学习，人工智能，人工智能，是，未来]</li>
+<li>[我们，学习，人工，智能，人工智能，是，未来]</li>
+<li>[我们，学习，人工，智能，人工，智能，是，未来]</li>
+<li>[我们，学习，人工智能，人工，智能，是，未来]<br>…….</li>
+</ol>
+<h4 id="Step-2-我们也可以计算出每一个切分之后句子的概率："><a href="#Step-2-我们也可以计算出每一个切分之后句子的概率：" class="headerlink" title="Step 2: 我们也可以计算出每一个切分之后句子的概率："></a>Step 2: 我们也可以计算出每一个切分之后句子的概率：</h4><ol>
+<li>p(我们，学习，人工智能，人工智能，是，未来)= -log p(我们)-log p(学习)-log p(人工智能)-log p(人工智能)-log p(是)-log p(未来)</li>
+<li>p(我们，学习，人工，智能，人工智能，是，未来)=-log p(我们)-log p(学习)-log p(人工)-log p(智能)-log p(人工智能)-log p(是)-log p(未来)</li>
+<li>p(我们，学习，人工，智能，人工，智能，是，未来)=-log p(我们)-log p(学习)-log p(人工)-log p(智能)-log p(人工)-log p(智能)-log p(是)-log p(未来)</li>
+<li>p(我们，学习，人工智能，人工，智能，是，未来)=-log p(我们)-log p(学习)-log p(人工智能)-log p(人工)-log p(智能)-log(是)-log p(未来)<br>…..</li>
+</ol>
+<h4 id="Step-3-返回第二步中概率最大的结果："><a href="#Step-3-返回第二步中概率最大的结果：" class="headerlink" title="Step 3: 返回第二步中概率最大的结果："></a>Step 3: 返回第二步中概率最大的结果：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> p(我们，学习，人工智能，人工智能，是，未来)= -log p(我们)-log p(学习)-log p(人工智能)-log p(人工智能)-log p(是)-log p(未来)</li>
+</ul>
+<hr>
+<h2 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h2><p>　　上述方法存在一个很严重的问题：时间复杂度太高了。 为了解决这一问题，人们提出了「<a href="../%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95">维特比算法</a>」，基于动态规划来优化最大切分句子概率的查找，具体细节可查看上一篇博文。<br>　　动态规划不仅是NLP领域里用的特别多的算法，在各大面试中也是常被拿来考察的一类算法，这里列举讲解了十个非常经典的动态规划（DP）题：“<a href="../%E5%8D%81%E5%A4%A7%E7%BB%8F%E5%85%B8DP%E9%A2%98">十大经典DP题</a>”，有兴趣的同学可以了解一下。</p>
+<hr>
+]]></content>
       <categories>
         <category>NLP基础</category>
       </categories>

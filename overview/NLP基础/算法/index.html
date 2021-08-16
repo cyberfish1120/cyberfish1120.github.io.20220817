@@ -57,7 +57,7 @@
 
 
 
-<link rel="preconnect" href="https://website-1256060851.cos.ap-hongkong.myqcloud.com" crossorigin>
+<link rel="preconnect" href="https://website-1256060851.cos.ap-hongkong.myqcloud_.com" crossorigin>
 <link rel="preconnect" href="https://sdn.geekzu.org" crossorigin>
 
 
@@ -73,7 +73,7 @@
 <script type="text/javascript">
 // Live2d
 // 注意：live2d_path 参数应使用绝对路径
-const live2d_path = "https://cdn.jsdelivr.net/gh/lei2rock/live2d-widget/";
+const live2d_path = "https://cdn.jsdelivr.net/gh/cyberfish1120/live2d-widget@latest/";
 
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
@@ -100,14 +100,14 @@ function loadExternalResource(url, type) {
 // 加载 waifu.css live2d.min.js waifu-tips.js
 if (screen.width >= 768) {
 	Promise.all([
-		loadExternalResource(live2d_path + "waifu.min.css", "css"),
+		loadExternalResource(live2d_path + "waifu.css", "css"),
 		loadExternalResource(live2d_path + "live2d.min.js", "js"),
-		loadExternalResource(live2d_path + "waifu-tips.min.js", "js")
+		loadExternalResource(live2d_path + "waifu-tips.js", "js")
 	]).then(() => {
 		initWidget({
-			waifuPath: live2d_path + "waifu-tips.json",
-			apiPath: "https://api.dlzhang.com/live2d/", // https://live2d.fghrsh.net/api/
-			//cdnPath: "https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/"
+			 waifuPath: live2d_path + "waifu-tips.json",
+			//apiPath: "https://api.dlzhang.com/live2d/", // https://live2d.fghrsh.net/api/
+			cdnPath: "https://cdn.jsdelivr.net/gh/cyberfish1120/live2d_api/",
 		});
 	});
 }
@@ -134,13 +134,6 @@ console.log(`
                   ﾄ-,/  |___./
                   'ｰ'    !_,.:
 `);
-// End Live2d Code
-
-window.addEventListener('load', () => {
-	console.log(`\n%c醉里挑灯赏猫%c班班 @lei2rock%c\n`, 'padding: 8px; background: #3f5973; font-weight: bold; font-size: large; color: white;', 'padding: 8px; background: #649ab6; font-size: large; color: #eee;','');
-	console.log(`页面加载完毕消耗了${Math.round(performance.now() * 100) / 100}ms`);
-});
-
 </script>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -344,7 +337,7 @@ window.addEventListener('load', () => {
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/posts/null/" itemprop="url">
+          <a class="post-title-link" href="/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/" itemprop="url">
             <span itemprop="name">维特比算法</span>
           </a>
       </div>
