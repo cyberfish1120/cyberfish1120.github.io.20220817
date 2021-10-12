@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>声明</title>
+    <url>/1900/%E5%A3%B0%E6%98%8E/</url>
+    <content><![CDATA[<p>本博客模板是在“班班”的博客<a href="https://github.com/lei2rock/blog"><i class="fab fa-fw fa-github"></i>Lei2rock/Blog</a>基础上进行的修改，感谢班班，原博客地址：<a href="https://blog.dlzhang.com/">https://blog.dlzhang.com</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>图的DFS、BFS算法细节</title>
     <url>/2020/%E4%B8%B4%E7%95%8C%E7%9F%A9%E9%98%B5%E7%9A%84DFS%E3%80%81BFS%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>　　深度优先算法（DFS）和广度优先算法（BFS）在许多<strong>树</strong>和<strong>图</strong>的问题上都能派上用场。基于树的DFS、BFS比较简单，但基于图DFS、BFS在传参的时候有一些小细节得注意一下。不同于树，由于树具有层次结构，所以可以用一个int类型的值来表示各个节点；图则不然，需要通过（x，y）坐标的形式来表示各个节点，所以在代码编写时传递图节点（x，y）时，有哪些是值得注意的呢？</p>
@@ -41,10 +47,50 @@
       </tags>
   </entry>
   <entry>
-    <title>声明</title>
-    <url>/1900/%E5%A3%B0%E6%98%8E/</url>
-    <content><![CDATA[<p>本博客模板是在“班班”的博客<a href="https://github.com/lei2rock/blog"><i class="fab fa-fw fa-github"></i>Lei2rock/Blog</a>基础上进行的修改，感谢班班，原博客地址：<a href="https://blog.dlzhang.com/">https://blog.dlzhang.com</a></p>
+    <title>NLP任务示例：文本自动纠错（基于统计模型）</title>
+    <url>/2021/NLP%E4%BB%BB%E5%8A%A1%E7%A4%BA%E4%BE%8B%EF%BC%9A%E6%96%87%E6%9C%AC%E8%87%AA%E5%8A%A8%E7%BA%A0%E9%94%99%EF%BC%88%E5%9F%BA%E4%BA%8E%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%9E%8B%EF%BC%89/</url>
+    <content><![CDATA[<p><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20210819134228.png"><br>　　其实文本纠错的原理和我们直觉认为上面单词写错了是一样的。我们之所以认为上面的 <em>appl</em> 是错误的，是因为我们拥有大量的 <em>apple</em>和<em>I have an apple.</em> 的先验知识，<em>appl</em> 是啥？不知道。那机器让如何拥有这种知识呢，答案是：<strong>统计学习</strong>和<strong>神经网络</strong>。我们先来看下<strong>基于统计模型的文本自动纠错</strong>~</p>
+<span id="more"></span>
+<hr>
+<p>整个文本纠错任务可以分为以下几个步骤：</p>
+<ol>
+<li>首先第一步：找到出错的单词；</li>
+<li>然后用<a href="../NLP%E5%9F%BA%E7%A1%80%EF%BC%9A%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB">编辑距离</a>求出候选的正确的单词集合；</li>
+<li>基于统计方法训练语言模型；</li>
+<li>通过贝叶斯定理和语言模型找出最符合文本上下文的词。</li>
+</ol>
+<hr>
+<h3 id="第一步：找出出错的单词"><a href="#第一步：找出出错的单词" class="headerlink" title="第一步：找出出错的单词"></a>第一步：找出出错的单词</h3><p>比如“I have an apply”，通过大量的先验知识，我们可以很直观的知道这里将“apple”错写成了“apply”，那么机器如何知道这一点呢？这就需要靠<a href="">语言模型（LM）</a>了，我们可以设定一个阈值，当bi-gram LM（一般是）输出的概率小于该阈值时就认为该单词为写错的单词，比如这里的P(apply|an)应该会低于阈值。这里为了简单演示纠错整个原理，将这一步简化成不在词典里的单词。</p>
+<h3 id="第二步：用编辑距离求出候选的正确的单词集合"><a href="#第二步：用编辑距离求出候选的正确的单词集合" class="headerlink" title="第二步：用编辑距离求出候选的正确的单词集合"></a>第二步：用<a href="../NLP%E5%9F%BA%E7%A1%80%EF%BC%9A%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB">编辑距离</a>求出候选的正确的单词集合</h3><p>这里编辑距离选1，2都行，2基本上已经涵盖了99%的错词情况。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_candidates</span>(<span class="params">word</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    word: 给定的输入（错误的输入） </span></span><br><span class="line"><span class="string">    返回所有(valid)候选集合</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 生成编辑距离为1的单词</span></span><br><span class="line">    <span class="comment"># 1.insert 2. delete 3. replace</span></span><br><span class="line">    <span class="comment"># appl: replace: bppl, cppl, aapl, abpl... </span></span><br><span class="line">    <span class="comment">#       insert: bappl, cappl, abppl, acppl....</span></span><br><span class="line">    <span class="comment">#       delete: ppl, apl, app</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 假设使用26个字符</span></span><br><span class="line">    letters = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyz&#x27;</span> </span><br><span class="line">    </span><br><span class="line">    splits = [(word[:i], word[i:]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(word)+<span class="number">1</span>)]</span><br><span class="line">    <span class="comment"># insert操作</span></span><br><span class="line">    inserts = [L+c+R <span class="keyword">for</span> L, R <span class="keyword">in</span> splits <span class="keyword">for</span> c <span class="keyword">in</span> letters]</span><br><span class="line">    <span class="comment"># delete操作</span></span><br><span class="line">    deletes = [L+R[<span class="number">1</span>:] <span class="keyword">for</span> L,R <span class="keyword">in</span> splits <span class="keyword">if</span> R]</span><br><span class="line">    <span class="comment"># replace操作</span></span><br><span class="line">    replaces = [L+c+R[<span class="number">1</span>:] <span class="keyword">for</span> L,R <span class="keyword">in</span> splits <span class="keyword">if</span> R <span class="keyword">for</span> c <span class="keyword">in</span> letters]</span><br><span class="line">    </span><br><span class="line">    candidates = <span class="built_in">set</span>(inserts+deletes+replaces)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 过滤掉不存在于词典库里面的单词</span></span><br><span class="line">    <span class="keyword">return</span> [word <span class="keyword">for</span> word <span class="keyword">in</span> candidates <span class="keyword">if</span> word <span class="keyword">in</span> vocab]</span><br><span class="line"></span><br><span class="line">generate_candidates(<span class="string">&quot;appl&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="第三步：基于统计方法训练语言模型"><a href="#第三步：基于统计方法训练语言模型" class="headerlink" title="第三步：基于统计方法训练语言模型"></a>第三步：基于统计方法训练语言模型</h3><h4 id="3-1首先读取语料库（训练集）"><a href="#3-1首先读取语料库（训练集）" class="headerlink" title="3.1首先读取语料库（训练集）"></a>3.1首先读取语料库（训练集）</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> nltk.corpus <span class="keyword">import</span> reuters</span><br><span class="line">categories = reuters.categories()</span><br><span class="line">corpus = reuters.sents(categories=categories)</span><br></pre></td></tr></table></figure>
+<h4 id="3-2构建语言模型-bigram（sklearn里面也有现成的包）"><a href="#3-2构建语言模型-bigram（sklearn里面也有现成的包）" class="headerlink" title="3.2构建语言模型: bigram（sklearn里面也有现成的包）"></a>3.2构建语言模型: bigram（sklearn里面也有现成的包）</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">term_count = &#123;&#125;</span><br><span class="line">bigram_count = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> doc <span class="keyword">in</span> corpus:</span><br><span class="line">    doc = [<span class="string">&#x27;&lt;s&gt;&#x27;</span>] + doc</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(doc)-<span class="number">1</span>):</span><br><span class="line">        <span class="comment"># bigram: [i,i+1]</span></span><br><span class="line">        term = doc[i]</span><br><span class="line">        bigram = doc[i:i+<span class="number">2</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> term <span class="keyword">in</span> term_count:</span><br><span class="line">            term_count[term]+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            term_count[term]=<span class="number">1</span></span><br><span class="line">        bigram = <span class="string">&#x27; &#x27;</span>.join(bigram)</span><br><span class="line">        <span class="keyword">if</span> bigram <span class="keyword">in</span> bigram_count:</span><br><span class="line">            bigram_count[bigram]+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            bigram_count[bigram]=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-3计算用户打错的概率统计-channel-probability"><a href="#3-3计算用户打错的概率统计-channel-probability" class="headerlink" title="3.3计算用户打错的概率统计 - channel probability"></a>3.3计算用户打错的概率统计 - channel probability</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">channel_prob = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(<span class="string">&#x27;spell-errors.txt&#x27;</span>):</span><br><span class="line">    items = line.split(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    correct = items[<span class="number">0</span>].strip()</span><br><span class="line">    mistakes = [item.strip() <span class="keyword">for</span> item <span class="keyword">in</span> items[<span class="number">1</span>].strip().split(<span class="string">&quot;,&quot;</span>)]</span><br><span class="line">    channel_prob[correct] = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> mis <span class="keyword">in</span> mistakes:</span><br><span class="line">        channel_prob[correct][mis] = <span class="number">1.0</span>/<span class="built_in">len</span>(mistakes)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(channel_prob)   </span><br></pre></td></tr></table></figure>
+
+<h3 id="第四步：通过贝叶斯定理和语言模型找出最符合文本上下文的词"><a href="#第四步：通过贝叶斯定理和语言模型找出最符合文本上下文的词" class="headerlink" title="第四步：通过贝叶斯定理和语言模型找出最符合文本上下文的词"></a>第四步：通过贝叶斯定理和语言模型找出最符合文本上下文的词</h3><p><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20210819230651.png"><br>测试集文档由sentence组成，每个sentence有一个不在词典里的错别词，找出并纠正该错别词。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">V = <span class="built_in">len</span>(term_count.keys())</span><br><span class="line"></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;testdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> file:</span><br><span class="line">    items = line.rstrip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    line = items[<span class="number">2</span>].split()</span><br><span class="line">    <span class="comment"># line = [&quot;I&quot;, &quot;like&quot;, &quot;playing&quot;]</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> line:</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> vocab:</span><br><span class="line">            <span class="comment"># 需要替换word成正确的单词</span></span><br><span class="line">            <span class="comment"># Step1: 生成所有的(valid)候选集合</span></span><br><span class="line">            candidates = generate_candidates(word)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 一种方式： if candidate = [], 多生成几个candidates, 比如生成编辑距离不大于2的</span></span><br><span class="line">            <span class="comment"># TODO ： 根据条件生成更多的候选集合</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(candidates) &lt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">continue</span>   <span class="comment"># 不建议这么做（这是不对的） </span></span><br><span class="line">            probs = []</span><br><span class="line">            <span class="comment"># 对于每一个candidate, 计算它的score</span></span><br><span class="line">            <span class="comment"># score = p(correct)*p(mistake|correct)</span></span><br><span class="line">            <span class="comment">#       = log p(correct) + log p(mistake|correct)</span></span><br><span class="line">            <span class="comment"># 返回score最大的candidate</span></span><br><span class="line">            <span class="keyword">for</span> candi <span class="keyword">in</span> candidates:</span><br><span class="line">                prob = <span class="number">0</span></span><br><span class="line">                <span class="comment"># a. 计算channel probability</span></span><br><span class="line">                <span class="keyword">if</span> candi <span class="keyword">in</span> channel_prob <span class="keyword">and</span> word <span class="keyword">in</span> channel_prob[candi]:</span><br><span class="line">                    prob += np.log(channel_prob[candi][word])</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    prob += np.log(<span class="number">0.0001</span>)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># b. 计算语言模型的概率</span></span><br><span class="line">                idx = items[<span class="number">2</span>].index(word)+<span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> items[<span class="number">2</span>][idx - <span class="number">1</span>] <span class="keyword">in</span> bigram_count <span class="keyword">and</span> candi <span class="keyword">in</span> bigram_count[items[<span class="number">2</span>][idx - <span class="number">1</span>]]:</span><br><span class="line">                    prob += np.log((bigram_count[items[<span class="number">2</span>][idx - <span class="number">1</span>]][candi] + <span class="number">1.0</span>) / (</span><br><span class="line">                            term_count[bigram_count[items[<span class="number">2</span>][idx - <span class="number">1</span>]]] + V))</span><br><span class="line">                <span class="comment"># <span class="doctag">TODO:</span> 也要考虑当前 [word, post_word]</span></span><br><span class="line">                <span class="comment">#   prob += np.log(bigram概率)</span></span><br><span class="line">                </span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    prob += np.log(<span class="number">1.0</span> / V)</span><br><span class="line"></span><br><span class="line">                probs.append(prob)</span><br><span class="line">                </span><br><span class="line">            max_idx = probs.index(<span class="built_in">max</span>(probs))</span><br><span class="line">            <span class="built_in">print</span> (word, candidates[max_idx])</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>NLP进阶</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>文本纠错</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NLP任务示例：词性标注</title>
+    <url>/2021/NLP%E4%BB%BB%E5%8A%A1%E7%A4%BA%E4%BE%8B%EF%BC%9A%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8/</url>
+    <content><![CDATA[<span id="more"></span>
+<hr>
 ]]></content>
+      <categories>
+        <category>NLP任务示例</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>词性标注</tag>
+      </tags>
   </entry>
   <entry>
     <title>NLP基础：从分词和向量化说起</title>
@@ -122,22 +168,43 @@
         <category>NLP基础</category>
       </categories>
       <tags>
-        <tag>分词</tag>
         <tag>NLP</tag>
+        <tag>分词</tag>
       </tags>
   </entry>
   <entry>
-    <title>维特比算法</title>
-    <url>/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<span id="more"></span>]]></content>
+    <title>TripPy：A Triple Copy Strategy for Value Independent Neural Dialog State Tracking</title>
+    <url>/2021/TripPy%EF%BC%9AA%20Triple%20Copy%20Strategy%20for%20Value%20Independent%20Neural%20Dialog%20State%20Tracking/</url>
+    <content><![CDATA[<p><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012151220.png"></p>
+<span id="more"></span>
+<hr>
+<p><strong>现有的缺陷</strong><br>Slot的类型多种多样，单一的Slot Value填充方法无法满足需求。  </p>
+<p><strong>本文贡献</strong><br>采用三种不同的Slot Value填充方法来完成DST任务  </p>
+<ol>
+<li>span prediction：从用户输入中提取候选值；  </li>
+<li>copied from a system inform memory：由系统提供，然后用户确认。比如，系统：“xx餐厅的青椒炒肉挺不错的”，用户：“好，就去那吃吧”，则[餐厅-名称]为xx餐厅；</li>
+<li>值共享：不同的slot有相同的value，比如[酒店-地址]和[出租车-目的地]很大程度上会形成值共享。  </li>
+</ol>
+<p><strong>模型架构</strong><br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012161052.png"></p>
+<p>模型有以下几个点得注意一下：</p>
+<ol>
+<li>首先模型的输入为整个对话历史；</li>
+<li>对于每一个Slot都会有一个分类器（5分类和boolslot4分类）；</li>
+<li>span-based value prediction模块没啥好说的了，end &lt; start时置为空；</li>
+<li>System Inform Memory for Value Prediction;</li>
+<li>DS Memory for Coreference Resolution: N+1(none)分类，看该slot有没有共享值；</li>
+<li>Auxiliary Features</li>
+</ol>
+<p><strong>实验结果</strong><br>MultWoz2.1：<br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012183957.png">  </p>
+<p>消融实验：<br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012184433.png">  </p>
+<p><strong>实验总结</strong><br>模型的计算方法是DS-DST的一种改良版本吧。在特征提取这块。DS-DST 将 CLS，一个域槽对和对话上下文拼接起来。由于所有域槽对的词向量是不同的，则可以凭此遍历所有的域槽对，使得每次捕获到的特征都是根据域槽对的变化而变化。所以当使用 CLS 进行 slot gate 分类时，可以确定该 slot gate 是基于某一域槽对的，并且 CLS 表征总是不同的。但是这样的做法计算起来特别麻烦，因为如果想要向量化，必须复制 N 份上下文（N 为域槽对数量）。<br>TripPy略微地改进了它，它移除了输入中的域槽对，然后，TripPy 为每一个域槽对都设计了一个线性层用于计算 slot gate。这也能使得 CLS 的表征总是不同，因为线性层中的权重矩阵是不同的。</p>
+]]></content>
       <categories>
-        <category>NLP基础</category>
-        <category>算法</category>
+        <category>论文笔记</category>
       </categories>
       <tags>
-        <tag>算法</tag>
         <tag>NLP</tag>
-        <tag>维特比算法</tag>
+        <tag>DST</tag>
       </tags>
   </entry>
   <entry>
@@ -241,84 +308,17 @@ rose -> ros (删除 'e')<br>
       </tags>
   </entry>
   <entry>
-    <title>NLP任务示例：文本自动纠错（基于统计模型）</title>
-    <url>/2021/NLP%E4%BB%BB%E5%8A%A1%E7%A4%BA%E4%BE%8B%EF%BC%9A%E6%96%87%E6%9C%AC%E8%87%AA%E5%8A%A8%E7%BA%A0%E9%94%99%EF%BC%88%E5%9F%BA%E4%BA%8E%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%9E%8B%EF%BC%89/</url>
-    <content><![CDATA[<p><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20210819134228.png"><br>　　其实文本纠错的原理和我们直觉认为上面单词写错了是一样的。我们之所以认为上面的 <em>appl</em> 是错误的，是因为我们拥有大量的 <em>apple</em>和<em>I have an apple.</em> 的先验知识，<em>appl</em> 是啥？不知道。那机器让如何拥有这种知识呢，答案是：<strong>统计学习</strong>和<strong>神经网络</strong>。我们先来看下<strong>基于统计模型的文本自动纠错</strong>~</p>
-<span id="more"></span>
-<hr>
-<p>整个文本纠错任务可以分为以下几个步骤：</p>
-<ol>
-<li>首先第一步：找到出错的单词；</li>
-<li>然后用<a href="../NLP%E5%9F%BA%E7%A1%80%EF%BC%9A%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB">编辑距离</a>求出候选的正确的单词集合；</li>
-<li>基于统计方法训练语言模型；</li>
-<li>通过贝叶斯定理和语言模型找出最符合文本上下文的词。</li>
-</ol>
-<hr>
-<h3 id="第一步：找出出错的单词"><a href="#第一步：找出出错的单词" class="headerlink" title="第一步：找出出错的单词"></a>第一步：找出出错的单词</h3><p>比如“I have an apply”，通过大量的先验知识，我们可以很直观的知道这里将“apple”错写成了“apply”，那么机器如何知道这一点呢？这就需要靠<a href="">语言模型（LM）</a>了，我们可以设定一个阈值，当bi-gram LM（一般是）输出的概率小于该阈值时就认为该单词为写错的单词，比如这里的P(apply|an)应该会低于阈值。这里为了简单演示纠错整个原理，将这一步简化成不在词典里的单词。</p>
-<h3 id="第二步：用编辑距离求出候选的正确的单词集合"><a href="#第二步：用编辑距离求出候选的正确的单词集合" class="headerlink" title="第二步：用编辑距离求出候选的正确的单词集合"></a>第二步：用<a href="../NLP%E5%9F%BA%E7%A1%80%EF%BC%9A%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB">编辑距离</a>求出候选的正确的单词集合</h3><p>这里编辑距离选1，2都行，2基本上已经涵盖了99%的错词情况。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_candidates</span>(<span class="params">word</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    word: 给定的输入（错误的输入） </span></span><br><span class="line"><span class="string">    返回所有(valid)候选集合</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 生成编辑距离为1的单词</span></span><br><span class="line">    <span class="comment"># 1.insert 2. delete 3. replace</span></span><br><span class="line">    <span class="comment"># appl: replace: bppl, cppl, aapl, abpl... </span></span><br><span class="line">    <span class="comment">#       insert: bappl, cappl, abppl, acppl....</span></span><br><span class="line">    <span class="comment">#       delete: ppl, apl, app</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 假设使用26个字符</span></span><br><span class="line">    letters = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyz&#x27;</span> </span><br><span class="line">    </span><br><span class="line">    splits = [(word[:i], word[i:]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(word)+<span class="number">1</span>)]</span><br><span class="line">    <span class="comment"># insert操作</span></span><br><span class="line">    inserts = [L+c+R <span class="keyword">for</span> L, R <span class="keyword">in</span> splits <span class="keyword">for</span> c <span class="keyword">in</span> letters]</span><br><span class="line">    <span class="comment"># delete操作</span></span><br><span class="line">    deletes = [L+R[<span class="number">1</span>:] <span class="keyword">for</span> L,R <span class="keyword">in</span> splits <span class="keyword">if</span> R]</span><br><span class="line">    <span class="comment"># replace操作</span></span><br><span class="line">    replaces = [L+c+R[<span class="number">1</span>:] <span class="keyword">for</span> L,R <span class="keyword">in</span> splits <span class="keyword">if</span> R <span class="keyword">for</span> c <span class="keyword">in</span> letters]</span><br><span class="line">    </span><br><span class="line">    candidates = <span class="built_in">set</span>(inserts+deletes+replaces)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 过滤掉不存在于词典库里面的单词</span></span><br><span class="line">    <span class="keyword">return</span> [word <span class="keyword">for</span> word <span class="keyword">in</span> candidates <span class="keyword">if</span> word <span class="keyword">in</span> vocab]</span><br><span class="line"></span><br><span class="line">generate_candidates(<span class="string">&quot;appl&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="第三步：基于统计方法训练语言模型"><a href="#第三步：基于统计方法训练语言模型" class="headerlink" title="第三步：基于统计方法训练语言模型"></a>第三步：基于统计方法训练语言模型</h3><h4 id="3-1首先读取语料库（训练集）"><a href="#3-1首先读取语料库（训练集）" class="headerlink" title="3.1首先读取语料库（训练集）"></a>3.1首先读取语料库（训练集）</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> nltk.corpus <span class="keyword">import</span> reuters</span><br><span class="line">categories = reuters.categories()</span><br><span class="line">corpus = reuters.sents(categories=categories)</span><br></pre></td></tr></table></figure>
-<h4 id="3-2构建语言模型-bigram（sklearn里面也有现成的包）"><a href="#3-2构建语言模型-bigram（sklearn里面也有现成的包）" class="headerlink" title="3.2构建语言模型: bigram（sklearn里面也有现成的包）"></a>3.2构建语言模型: bigram（sklearn里面也有现成的包）</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">term_count = &#123;&#125;</span><br><span class="line">bigram_count = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> doc <span class="keyword">in</span> corpus:</span><br><span class="line">    doc = [<span class="string">&#x27;&lt;s&gt;&#x27;</span>] + doc</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(doc)-<span class="number">1</span>):</span><br><span class="line">        <span class="comment"># bigram: [i,i+1]</span></span><br><span class="line">        term = doc[i]</span><br><span class="line">        bigram = doc[i:i+<span class="number">2</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> term <span class="keyword">in</span> term_count:</span><br><span class="line">            term_count[term]+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            term_count[term]=<span class="number">1</span></span><br><span class="line">        bigram = <span class="string">&#x27; &#x27;</span>.join(bigram)</span><br><span class="line">        <span class="keyword">if</span> bigram <span class="keyword">in</span> bigram_count:</span><br><span class="line">            bigram_count[bigram]+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            bigram_count[bigram]=<span class="number">1</span></span><br></pre></td></tr></table></figure>
-<h4 id="3-3计算用户打错的概率统计-channel-probability"><a href="#3-3计算用户打错的概率统计-channel-probability" class="headerlink" title="3.3计算用户打错的概率统计 - channel probability"></a>3.3计算用户打错的概率统计 - channel probability</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">channel_prob = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(<span class="string">&#x27;spell-errors.txt&#x27;</span>):</span><br><span class="line">    items = line.split(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    correct = items[<span class="number">0</span>].strip()</span><br><span class="line">    mistakes = [item.strip() <span class="keyword">for</span> item <span class="keyword">in</span> items[<span class="number">1</span>].strip().split(<span class="string">&quot;,&quot;</span>)]</span><br><span class="line">    channel_prob[correct] = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> mis <span class="keyword">in</span> mistakes:</span><br><span class="line">        channel_prob[correct][mis] = <span class="number">1.0</span>/<span class="built_in">len</span>(mistakes)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(channel_prob)   </span><br></pre></td></tr></table></figure>
-
-<h3 id="第四步：通过贝叶斯定理和语言模型找出最符合文本上下文的词"><a href="#第四步：通过贝叶斯定理和语言模型找出最符合文本上下文的词" class="headerlink" title="第四步：通过贝叶斯定理和语言模型找出最符合文本上下文的词"></a>第四步：通过贝叶斯定理和语言模型找出最符合文本上下文的词</h3><p><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20210819230651.png"><br>测试集文档由sentence组成，每个sentence有一个不在词典里的错别词，找出并纠正该错别词。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">V = <span class="built_in">len</span>(term_count.keys())</span><br><span class="line"></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;testdata.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> file:</span><br><span class="line">    items = line.rstrip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    line = items[<span class="number">2</span>].split()</span><br><span class="line">    <span class="comment"># line = [&quot;I&quot;, &quot;like&quot;, &quot;playing&quot;]</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> line:</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> vocab:</span><br><span class="line">            <span class="comment"># 需要替换word成正确的单词</span></span><br><span class="line">            <span class="comment"># Step1: 生成所有的(valid)候选集合</span></span><br><span class="line">            candidates = generate_candidates(word)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 一种方式： if candidate = [], 多生成几个candidates, 比如生成编辑距离不大于2的</span></span><br><span class="line">            <span class="comment"># TODO ： 根据条件生成更多的候选集合</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(candidates) &lt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">continue</span>   <span class="comment"># 不建议这么做（这是不对的） </span></span><br><span class="line">            probs = []</span><br><span class="line">            <span class="comment"># 对于每一个candidate, 计算它的score</span></span><br><span class="line">            <span class="comment"># score = p(correct)*p(mistake|correct)</span></span><br><span class="line">            <span class="comment">#       = log p(correct) + log p(mistake|correct)</span></span><br><span class="line">            <span class="comment"># 返回score最大的candidate</span></span><br><span class="line">            <span class="keyword">for</span> candi <span class="keyword">in</span> candidates:</span><br><span class="line">                prob = <span class="number">0</span></span><br><span class="line">                <span class="comment"># a. 计算channel probability</span></span><br><span class="line">                <span class="keyword">if</span> candi <span class="keyword">in</span> channel_prob <span class="keyword">and</span> word <span class="keyword">in</span> channel_prob[candi]:</span><br><span class="line">                    prob += np.log(channel_prob[candi][word])</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    prob += np.log(<span class="number">0.0001</span>)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># b. 计算语言模型的概率</span></span><br><span class="line">                idx = items[<span class="number">2</span>].index(word)+<span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> items[<span class="number">2</span>][idx - <span class="number">1</span>] <span class="keyword">in</span> bigram_count <span class="keyword">and</span> candi <span class="keyword">in</span> bigram_count[items[<span class="number">2</span>][idx - <span class="number">1</span>]]:</span><br><span class="line">                    prob += np.log((bigram_count[items[<span class="number">2</span>][idx - <span class="number">1</span>]][candi] + <span class="number">1.0</span>) / (</span><br><span class="line">                            term_count[bigram_count[items[<span class="number">2</span>][idx - <span class="number">1</span>]]] + V))</span><br><span class="line">                <span class="comment"># <span class="doctag">TODO:</span> 也要考虑当前 [word, post_word]</span></span><br><span class="line">                <span class="comment">#   prob += np.log(bigram概率)</span></span><br><span class="line">                </span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    prob += np.log(<span class="number">1.0</span> / V)</span><br><span class="line"></span><br><span class="line">                probs.append(prob)</span><br><span class="line">                </span><br><span class="line">            max_idx = probs.index(<span class="built_in">max</span>(probs))</span><br><span class="line">            <span class="built_in">print</span> (word, candidates[max_idx])</span><br></pre></td></tr></table></figure>]]></content>
+    <title>维特比算法</title>
+    <url>/2021/%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<span id="more"></span>]]></content>
       <categories>
-        <category>NLP进阶</category>
+        <category>NLP基础</category>
+        <category>算法</category>
       </categories>
       <tags>
+        <tag>算法</tag>
         <tag>NLP</tag>
-        <tag>文本纠错</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NLP任务示例：词性标注</title>
-    <url>/2021/NLP%E4%BB%BB%E5%8A%A1%E7%A4%BA%E4%BE%8B%EF%BC%9A%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8/</url>
-    <content><![CDATA[<span id="more"></span>
-<hr>
-]]></content>
-      <categories>
-        <category>NLP任务示例</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>词性标注</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>TripPy：A Triple Copy Strategy for Value Independent Neural Dialog State Tracking</title>
-    <url>/2021/TripPy%EF%BC%9AA-Triple-Copy-Strategy-for-Value-Independent-Neural-Dialog-State-Tracking/</url>
-    <content><![CDATA[<p><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012151220.png"></p>
-<span id="more"></span>
-<hr>
-<p><strong>现有的缺陷</strong><br>Slot的类型多种多样，单一的Slot Value填充方法无法满足需求。  </p>
-<p><strong>本文贡献</strong><br>采用三种不同的Slot Value填充方法来完成DST任务  </p>
-<ol>
-<li>span prediction：从用户输入中提取候选值；  </li>
-<li>copied from a system inform memory：由系统提供，然后用户确认。比如，系统：“xx餐厅的青椒炒肉挺不错的”，用户：“好，就去那吃吧”，则[餐厅-名称]为xx餐厅；</li>
-<li>值共享：不同的slot有相同的value，比如[酒店-地址]和[出租车-目的地]很大程度上会形成值共享。  </li>
-</ol>
-<p><strong>模型架构</strong><br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012161052.png"></p>
-<p>模型有以下几个点得注意一下：</p>
-<ol>
-<li>首先模型的输入为整个对话历史；</li>
-<li>对于每一个Slot都会有一个分类器（5分类和boolslot4分类）；</li>
-<li>span-based value prediction模块没啥好说的了，end &lt; start时置为空；</li>
-<li>System Inform Memory for Value Prediction;</li>
-<li>DS Memory for Coreference Resolution: N+1(none)分类，看该slot有没有共享值；</li>
-<li>Auxiliary Features</li>
-</ol>
-<p><strong>实验结果</strong><br>MultWoz2.1：<br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012183957.png">  </p>
-<p>消融实验：<br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012184433.png">  </p>
-<p><strong>实验总结</strong><br>模型的计算方法是DS-DST的一种改良版本吧。在特征提取这块。DS-DST 将 CLS，一个域槽对和对话上下文拼接起来。由于所有域槽对的词向量是不同的，则可以凭此遍历所有的域槽对，使得每次捕获到的特征都是根据域槽对的变化而变化。所以当使用 CLS 进行 slot gate 分类时，可以确定该 slot gate 是基于某一域槽对的，并且 CLS 表征总是不同的。但是这样的做法计算起来特别麻烦，因为如果想要向量化，必须复制 N 份上下文（N 为域槽对数量）。<br>TripPy略微地改进了它，它移除了输入中的域槽对，然后，TripPy 为每一个域槽对都设计了一个线性层用于计算 slot gate。这也能使得 CLS 的表征总是不同，因为线性层中的权重矩阵是不同的。</p>
-]]></content>
-      <categories>
-        <category>论文笔记</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>DST</tag>
+        <tag>维特比算法</tag>
       </tags>
   </entry>
 </search>
