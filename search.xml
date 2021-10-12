@@ -272,4 +272,53 @@ rose -> ros (删除 'e')<br>
         <tag>文本纠错</tag>
       </tags>
   </entry>
+  <entry>
+    <title>NLP任务示例：词性标注</title>
+    <url>/2021/NLP%E4%BB%BB%E5%8A%A1%E7%A4%BA%E4%BE%8B%EF%BC%9A%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8/</url>
+    <content><![CDATA[<span id="more"></span>
+<hr>
+]]></content>
+      <categories>
+        <category>NLP任务示例</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>词性标注</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TripPy：A_Triple_Copy_Strategy_for_Value_Independent_Neural_Dialog_State_Tracking</title>
+    <url>/2021/TripPy%EF%BC%9AA-Triple-Copy-Strategy-for-Value-Independent-Neural-Dialog-State-Tracking/</url>
+    <content><![CDATA[<p><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012151220.png"></p>
+<span id="more"></span>
+<hr>
+<p><strong>现有的缺陷</strong><br>Slot的类型多种多样，单一的Slot Value填充方法无法满足需求。  </p>
+<p><strong>本文贡献</strong><br>采用三种不同的Slot Value填充方法来完成DST任务  </p>
+<ol>
+<li>span prediction：从用户输入中提取候选值；  </li>
+<li>copied from a system inform memory：由系统提供，然后用户确认。比如，系统：“xx餐厅的青椒炒肉挺不错的”，用户：“好，就去那吃吧”，则[餐厅-名称]为xx餐厅；</li>
+<li>值共享：不同的slot有相同的value，比如[酒店-地址]和[出租车-目的地]很大程度上会形成值共享。  </li>
+</ol>
+<p><strong>模型架构</strong><br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012161052.png"></p>
+<p>模型有以下几个点得注意一下：</p>
+<ol>
+<li>首先模型的输入为整个对话历史；</li>
+<li>对于每一个Slot都会有一个分类器（5分类和boolslot4分类）；</li>
+<li>span-based value prediction模块没啥好说的了，end &lt; start时置为空；</li>
+<li>System Inform Memory for Value Prediction;</li>
+<li>DS Memory for Coreference Resolution: N+1(none)分类，看该slot有没有共享值；</li>
+<li>Auxiliary Features</li>
+</ol>
+<p><strong>实验结果</strong><br>MultWoz2.1：<br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012183957.png">  </p>
+<p>消融实验：<br><img data-src="https://cdn.jsdelivr.net/gh/cyberfish1120/cdn/img/20211012184433.png">  </p>
+<p><strong>实验总结</strong><br>模型的计算方法是DS-DST的一种改良版本吧。在特征提取这块。DS-DST 将 CLS，一个域槽对和对话上下文拼接起来。由于所有域槽对的词向量是不同的，则可以凭此遍历所有的域槽对，使得每次捕获到的特征都是根据域槽对的变化而变化。所以当使用 CLS 进行 slot gate 分类时，可以确定该 slot gate 是基于某一域槽对的，并且 CLS 表征总是不同的。但是这样的做法计算起来特别麻烦，因为如果想要向量化，必须复制 N 份上下文（N 为域槽对数量）。<br>TripPy略微地改进了它，它移除了输入中的域槽对，然后，TripPy 为每一个域槽对都设计了一个线性层用于计算 slot gate。这也能使得 CLS 的表征总是不同，因为线性层中的权重矩阵是不同的。</p>
+]]></content>
+      <categories>
+        <category>论文笔记</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>DST</tag>
+      </tags>
+  </entry>
 </search>
